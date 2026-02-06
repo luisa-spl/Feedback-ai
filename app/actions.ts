@@ -1,7 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ResponseType } from "./Types/types";
 
-export async function feedbackAnalyzer(text: string) {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+export async function feedbackAnalyzer(text: string): Promise<ResponseType> {
+  const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_AI_API_KEY!);
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
@@ -26,7 +27,7 @@ export async function feedbackAnalyzer(text: string) {
     RESPONSE FORMAT:
     {
       "feeling": "Positivo" | "Negativo" | "Neutro",
-      "category": "Logística" | "Produto" | "Atendimento" | "Outros" | "Invalid",
+      "category": "Logística" | "Produto" | "Atendimento" | "Outros" | "Invalido",
       "suggestion": "Write a short, polite response in Portuguese based on the examples above. If the feedback is negative, apologize and promise improvement."
     }
   `;
@@ -42,8 +43,8 @@ export async function feedbackAnalyzer(text: string) {
   } catch (error) {
     console.error("Erro na IA:", error);
     return { 
-      feeling: "Neutro", 
-      category: "Erro", 
+      feeling: "Erro", 
+      category: "Invalido", 
       suggestion: "Não foi possível analisar o feedback no momento." 
     };;
   }
