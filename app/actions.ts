@@ -1,10 +1,21 @@
+'use server';
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ResponseType } from "./Types/types";
 
+const MODEL_NAME = "gemini-2.5-flash";
+  
 export async function feedbackAnalyzer(text: string): Promise<ResponseType> {
-  const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_AI_API_KEY!);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const apiKey = process.env.GEMINI_API_KEY;
 
+  if (!apiKey) {
+    console.error("Erro: A variável de ambiente GEMINI_API_KEY não está definida.");
+    throw new Error("A chave da API não foi configurada no servidor.");
+  }
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+  
   const prompt = `
     You are an expert Customer Experience Manager for a restaurant. 
     Your task is to analyze the following customer feedback text: "${text}"
@@ -37,15 +48,11 @@ export async function feedbackAnalyzer(text: string): Promise<ResponseType> {
     const response = await result.response;
     const responseText = response.text();
     
-    const jsonString = responseText.replace(/```json|```/g, "").trim();
+    const jsonString = responseText.replace(/^```(json)?\n?|```$/g, "").trim();
     return JSON.parse(jsonString);
 
   } catch (error) {
     console.error("Erro na IA:", error);
-    return { 
-      feeling: "Erro", 
-      category: "Invalido", 
-      suggestion: "Não foi possível analisar o feedback no momento." 
-    };;
+    return { feeling: "Erro", category: "Invalido", suggestion: "Não foi possível analisar o feedback no momento." };
   }
 }
