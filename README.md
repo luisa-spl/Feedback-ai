@@ -1,5 +1,7 @@
 ![Project Banner](https://i.ibb.co/TD2tSBVN/image.png) 
 
+![Project Banner](https://i.ibb.co/fYrQcnRq/image.png) 
+
 
 ## 🚀 Sobre o Projeto
 
@@ -42,7 +44,7 @@ Implementei uma camada de validação no prompt para detectar inputs inválidos.
 
 1. **Clone o repositório**
    ```bash
-   git clone [https://github.com/seu-usuario/ai-feedback-analyzer.git](https://github.com/seu-usuario/ai-feedback-analyzer.git)
+   git clone [https://github.com/luisa-spl/ai-feedback-analyzer.git](https://github.com/luisa-spl/ai-feedback-analyzer.git)
 
 2. **Instale as dependências**
    ```bash
